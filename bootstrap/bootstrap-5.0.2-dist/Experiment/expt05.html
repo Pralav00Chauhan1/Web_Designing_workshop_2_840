@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Management System</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px gray;
+        }
+
+        h1 {
+            text-align: center;
+            color: darkblue;
+        }
+
+        input {
+            width: 95%;
+            padding: 10px;
+            margin: 10px 0;
+        }
+
+        button {
+            padding: 10px 15px;
+            margin: 5px;
+            background-color: blue;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: darkblue;
+        }
+
+        #output {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+
+        .employee-card {
+            background: #e8f0ff;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Employee Management System</h1>
+
+    <input type="text" id="name" placeholder="Enter Employee Name">
+
+    <input type="number" id="salary" placeholder="Enter Salary">
+
+    <input type="text" id="department" placeholder="Enter Department">
+
+    <button onclick="addEmployee()">Add Employee</button>
+
+    <button onclick="displayEmployees()">Display Employees</button>
+
+    <button onclick="filterEmployees()">Salary > 50000</button>
+
+    <button onclick="salaryStatistics()">Salary Statistics</button>
+
+    <div id="output"></div>
+
+</div>
+
+<script>
+
+    // Array to store employee objects
+    let employees = [];
+
+    // Function to add employee
+    function addEmployee() {
+
+        let name = document.getElementById("name").value;
+        let salary = parseFloat(document.getElementById("salary").value);
+        let department = document.getElementById("department").value;
+
+        let employee = {
+            name: name,
+            salary: salary,
+            department: department
+        };
+
+        employees.push(employee);
+
+        alert("Employee Added Successfully");
+
+        document.getElementById("name").value = "";
+        document.getElementById("salary").value = "";
+        document.getElementById("department").value = "";
+    }
+
+    // Function to display employees
+    function displayEmployees() {
+
+        let output = "<h2>Employee Records</h2>";
+
+        employees.forEach(function(emp) {
+
+            output += `
+                <div class="employee-card">
+                    <p><b>Name:</b> ${emp.name}</p>
+                    <p><b>Salary:</b> ₹${emp.salary}</p>
+                    <p><b>Department:</b> ${emp.department}</p>
+                </div>
+            `;
+        });
+
+        document.getElementById("output").innerHTML = output;
+    }
+
+    // Function to filter employees
+    function filterEmployees() {
+
+        let filtered = employees.filter(emp => emp.salary > 50000);
+
+        let output = "<h2>Employees with Salary > ₹50000</h2>";
+
+        filtered.forEach(function(emp) {
+
+            output += `
+                <div class="employee-card">
+                    <p><b>Name:</b> ${emp.name}</p>
+                    <p><b>Salary:</b> ₹${emp.salary}</p>
+                    <p><b>Department:</b> ${emp.department}</p>
+                </div>
+            `;
+        });
+
+        document.getElementById("output").innerHTML = output;
+    }
+
+    // Function for salary statistics
+    function salaryStatistics() {
+
+        let total = 0;
+
+        employees.forEach(emp => {
+            total += emp.salary;
+        });
+
+        let average = total / employees.length;
+
+        document.getElementById("output").innerHTML = `
+            <h2>Salary Statistics</h2>
+            <p><b>Total Salary:</b> ₹${total}</p>
+            <p><b>Average Salary:</b> ₹${average.toFixed(2)}</p>
+            <p><b>Total Employees:</b> ${employees.length}</p>
+        `;
+    }
+
+</script>
+
+</body>
+</html>
