@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React Counter Application</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            padding: 30px;
+        }
+        .container {
+            max-width: 500px;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0px 0px 10px gray;
+            text-align: center;
+        }
+        .buttonGroup {
+            margin-top: 20px;
+        }
+        button {
+            background-color: blue;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            margin: 5px;
+            padding: 10px 15px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>React Counter Application</h2>
+    <h1 id="countValue">0</h1>
+    <div class="buttonGroup">
+        <button id="incrementBtn">Increment (+)</button>
+        <button id="decrementBtn">Decrement (-)</button>
+    </div>
+    <button id="resetBtn">Reset</button>
+</div>
+<script>
+    let count = 0;
+    const countValue = document.getElementById("countValue");
+
+    function updateDisplay() {
+        countValue.textContent = count;
+    }
+
+    document.getElementById("incrementBtn").addEventListener("click", function () {
+        count += 1;
+        updateDisplay();
+    });
+
+    document.getElementById("decrementBtn").addEventListener("click", function () {
+        count -= 1;
+        updateDisplay();
+    });
+
+    document.getElementById("resetBtn").addEventListener("click", function () {
+        count = 0;
+        updateDisplay();
+    });
+</script>
+</body>
+</html>

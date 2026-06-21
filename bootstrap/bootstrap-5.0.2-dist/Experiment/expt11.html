@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Student Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f2f2f2;
+            margin: 0;
+            padding: 30px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: #fff;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+        h1 {
+            margin-top: 0;
+        }
+        .field {
+            margin-bottom: 14px;
+        }
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 8px;
+            background: #007bff;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .output {
+            margin-top: 20px;
+            background: #f9f9f9;
+            padding: 16px;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Student Management</h1>
+    <div class="field">
+        <label for="studentId">Student ID</label>
+        <input type="text" id="studentId" placeholder="Enter student ID" />
+    </div>
+    <div class="field">
+        <label for="studentName">Name</label>
+        <input type="text" id="studentName" placeholder="Enter student name" />
+    </div>
+    <div class="field">
+        <label for="studentCourse">Course</label>
+        <input type="text" id="studentCourse" placeholder="Enter course name" />
+    </div>
+    <button id="saveButton">Save Student</button>
+    <button id="loadButton">Load Student</button>
+    <div class="output" id="outputArea">
+        <p>No student loaded yet.</p>
+    </div>
+</div>
+<script>
+    let storedStudent = null;
+
+    const studentId = document.getElementById('studentId');
+    const studentName = document.getElementById('studentName');
+    const studentCourse = document.getElementById('studentCourse');
+    const outputArea = document.getElementById('outputArea');
+    const saveButton = document.getElementById('saveButton');
+    const loadButton = document.getElementById('loadButton');
+
+    function renderStudent(student) {
+        if (!student) {
+            outputArea.innerHTML = '<p>No student loaded yet.</p>';
+            return;
+        }
+        outputArea.innerHTML = `
+            <p><strong>Student ID:</strong> ${student.id}</p>
+            <p><strong>Name:</strong> ${student.name}</p>
+            <p><strong>Course:</strong> ${student.course}</p>
+        `;
+    }
+
+    function validateInput() {
+        const id = studentId.value.trim();
+        const name = studentName.value.trim();
+        const course = studentCourse.value.trim();
+
+        if (!id || !name || !course) {
+            outputArea.innerHTML = '<p style="color:red;">Please fill in all fields.</p>';
+            return false;
+        }
+        return true;
+    }
+
+    saveButton.addEventListener('click', () => {
+        if (!validateInput()) {
+            return;
+        }
+
+        storedStudent = {
+            id: studentId.value.trim(),
+            name: studentName.value.trim(),
+            course: studentCourse.value.trim()
+        };
+
+        outputArea.innerHTML = '<p style="color:green;">Student saved successfully.</p>';
+    });
+
+    loadButton.addEventListener('click', () => {
+        if (!storedStudent) {
+            outputArea.innerHTML = '<p style="color:red;">No student data saved yet.</p>';
+            return;
+        }
+        renderStudent(storedStudent);
+    });
+
+    renderStudent(null);
+</script>
+</body>
+</html>

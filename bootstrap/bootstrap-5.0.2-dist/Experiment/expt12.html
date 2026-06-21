@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Employee Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f2f2f2;
+            margin: 0;
+            padding: 30px;
+        }
+        .container {
+            max-width: 700px;
+            margin: auto;
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+        h1 {
+            margin-top: 0;
+        }
+        .field {
+            margin-bottom: 14px;
+        }
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 8px;
+            background: #007bff;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .output {
+            margin-top: 20px;
+            background: #f9f9f9;
+            padding: 16px;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+        }
+        .employee-list {
+            margin-top: 20px;
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .employee-list li {
+            padding: 8px 12px;
+            border-bottom: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Employee Management</h1>
+    <div class="field">
+        <label for="empName">Name</label>
+        <input type="text" id="empName" placeholder="Enter employee name" />
+    </div>
+    <div class="field">
+        <label for="empRole">Role</label>
+        <input type="text" id="empRole" placeholder="Enter employee role" />
+    </div>
+    <button id="addEmployeeButton">Add Employee</button>
+    <button id="clearButton">Clear List</button>
+    <div class="output" id="messageArea">
+        <p>No employees added yet.</p>
+    </div>
+    <h2>Employee List</h2>
+    <ul class="employee-list" id="employeeList"></ul>
+</div>
+<script>
+    const empName = document.getElementById('empName');
+    const empRole = document.getElementById('empRole');
+    const addEmployeeButton = document.getElementById('addEmployeeButton');
+    const clearButton = document.getElementById('clearButton');
+    const messageArea = document.getElementById('messageArea');
+    const employeeList = document.getElementById('employeeList');
+
+    const employees = [];
+
+    function renderEmployees() {
+        employeeList.innerHTML = '';
+
+        if (employees.length === 0) {
+            messageArea.innerHTML = '<p>No employees added yet.</p>';
+            return;
+        }
+
+        messageArea.innerHTML = `<p style="color: green;">${employees.length} employee(s) added.</p>`;
+
+        employees.forEach((employee, index) => {
+            const item = document.createElement('li');
+            item.textContent = `${index + 1}. ${employee.name} — ${employee.role}`;
+            employeeList.appendChild(item);
+        });
+    }
+
+    function validateEmployee() {
+        const name = empName.value.trim();
+        const role = empRole.value.trim();
+
+        if (!name || !role) {
+            messageArea.innerHTML = '<p style="color: red;">Please fill in both name and role.</p>';
+            return false;
+        }
+
+        return true;
+    }
+
+    addEmployeeButton.addEventListener('click', () => {
+        if (!validateEmployee()) {
+            return;
+        }
+
+        employees.push({
+            name: empName.value.trim(),
+            role: empRole.value.trim()
+        });
+
+        empName.value = '';
+        empRole.value = '';
+        renderEmployees();
+    });
+
+    clearButton.addEventListener('click', () => {
+        employees.length = 0;
+        empName.value = '';
+        empRole.value = '';
+        renderEmployees();
+    });
+
+    renderEmployees();
+</script>
+</body>
+</html>

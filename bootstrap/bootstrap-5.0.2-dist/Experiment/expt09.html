@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            padding: 30px;
+        }
+        .container {
+            max-width: 500px;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.15);
+        }
+        h2 {
+            margin-top: 0;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        input {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+        button {
+            padding: 10px 15px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .error {
+            color: red;
+            margin: 0;
+            font-size: 14px;
+        }
+        .success {
+            color: green;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        ul {
+            padding-left: 20px;
+            margin-top: 10px;
+        }
+        li {
+            margin-bottom: 6px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Registration Form</h2>
+    <form id="registrationForm">
+        <div>
+            <input type="text" id="nameInput" placeholder="Enter Name" />
+            <p class="error" id="nameError"></p>
+        </div>
+        <div>
+            <input type="email" id="emailInput" placeholder="Enter Email" />
+            <p class="error" id="emailError"></p>
+        </div>
+        <div>
+            <input type="password" id="passwordInput" placeholder="Enter Password" />
+            <p class="error" id="passwordError"></p>
+        </div>
+        <button type="submit">Register</button>
+    </form>
+    <p class="success" id="successMessage"></p>
+    <h3>Fetched Users (API Data)</h3>
+    <ul id="userList"></ul>
+</div>
+<script>
+    const nameInput = document.getElementById('nameInput');
+    const emailInput = document.getElementById('emailInput');
+    const passwordInput = document.getElementById('passwordInput');
+    const nameError = document.getElementById('nameError');
+    const emailError = document.getElementById('emailError');
+    const passwordError = document.getElementById('passwordError');
+    const successMessage = document.getElementById('successMessage');
+    const userList = document.getElementById('userList');
+
+    function validateForm() {
+        let valid = true;
+        nameError.textContent = '';
+        emailError.textContent = '';
+        passwordError.textContent = '';
+
+        if (!nameInput.value.trim()) {
+            nameError.textContent = 'Name is required';
+            valid = false;
+        }
+
+        if (!emailInput.value.includes('@')) {
+            emailError.textContent = 'Valid email required';
+            valid = false;
+        }
+
+        if (passwordInput.value.length < 6) {
+            passwordError.textContent = 'Password must be 6+ chars';
+            valid = false;
+        }
+
+        return valid;
+    }
+
+    document.getElementById('registrationForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+        successMessage.textContent = '';
+
+        if (validateForm()) {
+            successMessage.textContent = 'Registration successful!';
+            nameInput.value = '';
+            emailInput.value = '';
+            passwordInput.value = '';
+        }
+    });
+
+    fetch('https://jsonplaceholder.typicode.com/users')
+        .then((response) => response.json())
+        .then((data) => {
+            const users = data.slice(0, 5);
+            users.forEach((user) => {
+                const item = document.createElement('li');
+                item.textContent = `${user.name} - ${user.email}`;
+                userList.appendChild(item);
+            });
+        })
+        .catch((error) => {
+            console.error('Error fetching users:', error);
+            const item = document.createElement('li');
+            item.textContent = 'Unable to load users.';
+            userList.appendChild(item);
+        });
+</script>
+</body>
+</html>
